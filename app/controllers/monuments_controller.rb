@@ -24,11 +24,15 @@ class MonumentsController < ApplicationController
   def create
     @monument = Monument.new(monument_params)
 
+  respond_to do |format|
     if @monument.save
-      redirect_to @monument, notice: "Monument was successfully created."
+      format.html { redirect_to monument_path(@monument) }
+      format.json # Follows the classic Rails flow and look for a create.json view
     else
-      render :new, status: :unprocessable_entity
+      format.html { render "monuments/new", status: :unprocessable_entity }
+      format.json # Follows the classic Rails flow and look for a create.json view
     end
+  end
   end
 
   # PATCH/PUT /monuments/1
